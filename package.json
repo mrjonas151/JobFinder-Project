@@ -1,0 +1,25 @@
+{
+  "name": "job_finder",
+  "version": "1.0.0",
+  "description": "job search and supply system.",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "jobs",
+    "opportunity"
+  ],
+  "author": "Jonas Tomaz",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.3",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
