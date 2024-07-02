@@ -19,4 +19,8 @@ router.post('/add', (req, res)=>{
     .catch( (err) => console.log("ERROR: " + err));
 });
 
+router.get('/add', (req, res)=>{
+    res.render('add');
+})
+
 module.exports = router;

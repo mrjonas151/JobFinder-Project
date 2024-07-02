@@ -1,7 +1,10 @@
 const express = require('express');
+const {engine} = require('express-handlebars');
+const path = require('path')
 const app = express();
 const db = require('./db/connection');
 const bodyParser = require('body-parser');
+const Job = require('./models/Job');
 
 const PORT = 3000;
 
@@ -15,6 +18,14 @@ app.listen(PORT, function(){
 //json to receive the informations in json format
 app.use(express.json());
 
+//handlebars
+app.set('views', path.join(__dirname, 'views'));
+app.engine('handlebars', engine({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+
+//static folders
+app.use(express.static(path.join(__dirname, 'public')));
+
 //db connection
 db.authenticate().then(()=>{
     console.log("BD connection OK!")
@@ -24,8 +35,15 @@ db.authenticate().then(()=>{
 
 //routes
 app.get("/", (req, res) => {
-    res.send("It's working!");
-})
+    Job.findAll({order: [
+        ['createdAt', 'DESC']
+    ]})
+    .then(jobs => {
+        res.render("index", {
+            jobs
+        });
+    });
+});
 
 //jobs routes
 app.use('/jobs', require('./routes/jobs'));
