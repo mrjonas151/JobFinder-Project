@@ -9,8 +9,11 @@ app.listen(PORT, function(){
     console.log(`Server running! PORT:${PORT}`)
 });
 
-//body parser
-app.use(bodyParser.urlencoded({extended: false}));
+//body parser, but i prefer using express.json()
+//app.use(bodyParser.urlencoded({extended: false}));
+
+//json to receive the informations in json format
+app.use(express.json());
 
 //db connection
 db.authenticate().then(()=>{
