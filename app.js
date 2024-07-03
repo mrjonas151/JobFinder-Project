@@ -5,6 +5,8 @@ const app = express();
 const db = require('./db/connection');
 const bodyParser = require('body-parser');
 const Job = require('./models/Job');
+const Sequelize = require('sequelize');
+const OP = Sequelize.Op;
 
 const PORT = 3000;
 
@@ -12,8 +14,8 @@ app.listen(PORT, function(){
     console.log(`Server running! PORT:${PORT}`)
 });
 
-//body parser, but i prefer using express.json()
-//app.use(bodyParser.urlencoded({extended: false}));
+//body parser, but i prefer using express.json() receiving queries through the add.handlebars
+app.use(express.urlencoded({ extended: true }));
 
 //json to receive the informations in json format
 app.use(express.json());
@@ -35,14 +37,32 @@ db.authenticate().then(()=>{
 
 //routes
 app.get("/", (req, res) => {
-    Job.findAll({order: [
-        ['createdAt', 'DESC']
-    ]})
-    .then(jobs => {
-        res.render("index", {
-            jobs
+
+    let search = req.query.job;
+    let query = '%' + search + '%';
+
+    if(!search){
+        Job.findAll({order: [
+            ['createdAt', 'DESC']
+        ]})
+        .then(jobs => {
+            res.render("index", {
+                jobs
+            });
+        })
+        .catch(err => console.log("ERROR: "+err));
+    }else{
+        Job.findAll({
+            where: {title: {[OP.like]:query}},
+            order: [
+            ['createdAt', 'DESC']
+        ]})
+        .then(jobs => {
+            res.render("index", {
+                jobs, search
+            });
         });
-    });
+    }
 });
 
 //jobs routes

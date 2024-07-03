@@ -1,7 +1,7 @@
 <div id="top-container" class="container-fluid">
     <h1 id="main-title" class="text-center">Find your perfect job!</h1>
     <p id="main-subtitle" class="text-center">Our idea is to help employers and job seekers match</p>
-    <form id="search-form" class="form-inline" action="">
+    <form id="search-form" class="form-inline" action="/" method="GET">
         <div class="form-group col-md-10">
             <input type="text" class="form-control" id="job" name="job" placeholder="Enter the job you're looking for">
         </div>
@@ -14,19 +14,23 @@
     <div id="jobs-container" class="container">
     <div class="row">
         <div class="col-md-12">
-        <h2 id="job-list-title">Check out our featured jobs</h2>
-        <ul id="job-list" class="list-group">
+            {{#if search}}
+            <h2 id="job-list-title">Searching vacancies of: {{search}}</h2>
+            {{else}}
+            <h2 id="job-list-title">Check out our featured jobs</h2>
+            {{/if}}
+            <ul id="job-list" class="list-group">
             {{#each jobs}}
                 <li class="list-group-item {{#if dataValues.new_job}} new-job {{/if}}">
                     <img src="/img/company.svg" alt="Company">
                     <p>{{dataValues.company}}</p>
                     <h2>{{dataValues.title}}</h2>
-                    <p>{{dataValues.salary}}</p>
+                    <p>${{dataValues.salary}}</p>
                     <span class="new-job-label">New</span>
-                    <a class="btn btn-primary">View Job</a>
+                    <a class="btn btn-primary" href="/jobs/view/{{dataValues.id}}">View Job</a>
                 </li>
             {{/each}}
-        </ul>
+            </ul>
         </div>
     </div>
     </div>
